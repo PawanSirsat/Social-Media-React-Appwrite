@@ -22,10 +22,10 @@ The project is live on Vercel. [Visit MySocialMediaWebsite](https://social-media
 
 ## Getting Started
 
-1. Clone the repository: `git clone https://github.com/your-username/MySocialMediaWebsite.git`
+1. Clone the repository: `git clone https://github.com/PawanSirsat/Social-Media-React-Appwrite.git`
 2. Install dependencies: `npm install`
 3. Configure Appwrite: Set up your Appwrite backend and update the configuration.
-4. Run the development server: `npm start`
+4. Run the development server: `npm run dev`
 
 ## Contributing
 
