@@ -1,6 +1,7 @@
 # MySocialMediaWebsite SnapCharm
 
 MySocialMediaWebsite is a full-stack social media platform built with Tailwind CSS, React (TypeScript), React Query, and Appwrite. The project is deployed on Vercel.
+![Screenshot 2023-11-18 143736](https://github.com/PawanSirsat/Social-Media-React-Appwrite/assets/48860105/af9ebaa6-660e-4b62-ad7a-0b1574b82c1c)
 
 ## Deployment
 
