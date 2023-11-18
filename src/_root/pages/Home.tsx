@@ -55,7 +55,7 @@ const Home = () => {
         {isUserLoading && !creators ? (
           <Loader />
         ) : (
-          <ul className="grid 2xl:grid-cols-2 gap-6">
+          <ul className="grid 2xl:grid-cols-2 gap-4">
             {creators?.documents.map((creator) => (
               <li key={creator?.$id}>
                 <UserCard user={creator} />
