@@ -57,7 +57,7 @@ const Profile = () => {
     ) || []
   );
 
-  const [followingArray] = useState<string[]>(
+  const [followingArray, setfollowingArray] = useState<string[]>(
     followingsData?.documents[0]?.followings?.map(
       (item: { $id: any }) => item?.$id
     ) || []
@@ -69,19 +69,30 @@ const Profile = () => {
     ) || []
   );
 
+  useEffect(() => {
+    // Check if followersData is available and update followersArray
+    if (followersData?.documents[0]?.followers) {
+      setfollowersArray(
+        followersData.documents[0].followers.map(
+          (item: { $id: any }) => item?.$id
+        ) || []
+      );
+    }
+
+    // Check if followingsData is available and update followingArray
+    if (followingsData?.documents[0]?.followings) {
+      setfollowingArray(
+        followingsData.documents[0].followings.map(
+          (item: { $id: any }) => item?.$id
+        ) || []
+      );
+    }
+  }, [followersData, followingsData]);
+
   // console.log("Length");
   // console.log(followersArray);
   // console.log(followingArray);
   // console.log(LoggedInfollowing);
-
-  // const followersArray =
-  //   followersData?.documents[0]?.followers?.map(
-  //     (item: { $id: any }) => item?.$id
-  //   ) || [];
-  // const followingArray =
-  //   followingsData?.documents[0]?.followings?.map(
-  //     (item: { $id: any }) => item?.$id
-  //   ) || [];
 
   // console.log(`Login User ${user.id}`);
   // console.log(`Profile User ${currentUser?.$id}`);
@@ -108,11 +119,11 @@ const Profile = () => {
     setIsFollower(followingArrays.includes(user.id));
   }, [followingsData, user.id]);
 
-  console.log(followingsData);
-  console.log(followersData);
+  // console.log(followingsData);
+  // console.log(followersData);
 
-  console.log(isFollowing);
-  console.log(isFollower);
+  // console.log(isFollowing);
+  // console.log(isFollower);
 
   if (!currentUser)
     return (
@@ -128,9 +139,9 @@ const Profile = () => {
     try {
       let followsArray = [...followersArray];
       let LoginfollowsArray = [...LoggedInfollowing];
-      console.log("Before");
-      console.log(followsArray);
-      console.log(LoginfollowsArray);
+      // console.log("Before");
+      // console.log(followsArray);
+      // console.log(LoginfollowsArray);
 
       if (LoginfollowsArray.includes(currentUser?.$id)) {
         LoginfollowsArray = LoginfollowsArray.filter(
@@ -149,9 +160,9 @@ const Profile = () => {
       setfollowersArray(followsArray);
       // If not following, follow the user
 
-      console.log("After");
-      console.log(followsArray);
-      console.log(LoginfollowsArray);
+      // console.log("After");
+      // console.log(followsArray);
+      // console.log(LoginfollowsArray);
 
       await followUser(followsArray, LoginfollowsArray, visitDocId, loginDocId);
 
