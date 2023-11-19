@@ -6,8 +6,6 @@ import {
   useParams,
   useLocation,
 } from "react-router-dom";
-import { Models } from "appwrite";
-
 import { Button } from "@/components/ui";
 import { LikedPosts } from "@/_root/pages";
 import { useUserContext } from "@/context/AuthContext";
@@ -19,16 +17,11 @@ import {
 import { GridPostList, Loader } from "@/components/shared";
 import { followUser } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import { log } from "console";
 
 interface StabBlockProps {
   value: string | number;
   label: string;
 }
-
-type PostStatsProps = {
-  followlist: Models.Document;
-};
 
 const StatBlock = ({ value, label }: StabBlockProps) => (
   <div className="flex-center gap-2">
@@ -51,9 +44,6 @@ const Profile = () => {
 
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFollower, setIsFollower] = useState(false);
-
-  const [followlength, setfollowlength] = useState(0);
-  const [followinglength, setfollowinglength] = useState(0);
 
   const visitDocId = followersData?.documents[0]?.$id;
   const loginDocId = LoggedInfollowingsData?.documents[0]?.$id;
@@ -108,7 +98,6 @@ const Profile = () => {
         (item: { $id: any }) => item?.$id
       ) || [];
     setIsFollowing(followersArrays.includes(user.id));
-    setfollowlength(followersArrays.length);
   }, [followersData, user.id]);
 
   useEffect(() => {
@@ -117,7 +106,6 @@ const Profile = () => {
         (item: { $id: any }) => item?.$id
       ) || [];
     setIsFollower(followingArrays.includes(user.id));
-    setfollowinglength(followingArrays.length);
   }, [followingsData, user.id]);
 
   console.log(followingsData);
