@@ -19,6 +19,7 @@ import {
 import { GridPostList, Loader } from "@/components/shared";
 import { followUser } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import { log } from "console";
 
 interface StabBlockProps {
   value: string | number;
@@ -51,6 +52,9 @@ const Profile = () => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFollower, setIsFollower] = useState(false);
 
+  const [followlength, setfollowlength] = useState(0);
+  const [followinglength, setfollowinglength] = useState(0);
+
   const visitDocId = followersData?.documents[0]?.$id;
   const loginDocId = LoggedInfollowingsData?.documents[0]?.$id;
 
@@ -75,6 +79,11 @@ const Profile = () => {
     ) || []
   );
 
+  // console.log("Length");
+  // console.log(followersArray);
+  // console.log(followingArray);
+  // console.log(LoggedInfollowing);
+
   // const followersArray =
   //   followersData?.documents[0]?.followers?.map(
   //     (item: { $id: any }) => item?.$id
@@ -84,30 +93,35 @@ const Profile = () => {
   //     (item: { $id: any }) => item?.$id
   //   ) || [];
 
-  // console.log(`Login User ${user.id}`);
-  // console.log(`Profile User ${currentUser?.$id}`);
+  console.log(`Login User ${user.id}`);
+  console.log(`Profile User ${currentUser?.$id}`);
 
-  // console.log(followersArray);
-  // console.log(followingArray);
+  console.log(followersArray);
+  console.log(followingArray);
 
-  // console.log("login User Following ");
-  // console.log(LoggedInfollowing);
+  console.log("login User Following ");
+  console.log(LoggedInfollowing);
 
   useEffect(() => {
-    const followersArray =
+    const followersArrays =
       followersData?.documents[0]?.followers?.map(
         (item: { $id: any }) => item?.$id
       ) || [];
-    setIsFollowing(followersArray.includes(user.id));
+    setIsFollowing(followersArrays.includes(user.id));
+    setfollowlength(followersArrays.length);
   }, [followersData, user.id]);
 
   useEffect(() => {
-    const followingArray =
+    const followingArrays =
       followingsData?.documents[0]?.followings?.map(
         (item: { $id: any }) => item?.$id
       ) || [];
-    setIsFollower(followingArray.includes(user.id));
+    setIsFollower(followingArrays.includes(user.id));
+    setfollowinglength(followingArrays.length);
   }, [followingsData, user.id]);
+
+  console.log(followingsData);
+  console.log(followersData);
 
   console.log(isFollowing);
   console.log(isFollower);
