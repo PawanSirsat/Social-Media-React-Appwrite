@@ -33,3 +33,8 @@ The project is live on Vercel. [Visit MySocialMediaWebsite](https://social-media
 
 Contributions are welcome! Open issues, submit pull requests, or suggest features.
 
+![image](https://github.com/PawanSirsat/Social-Media-React-Appwrite/assets/48860105/c418f01d-8881-40db-90c6-7513057d4482)
+
+![image](https://github.com/PawanSirsat/Social-Media-React-Appwrite/assets/48860105/51cbba1c-9e95-4cf5-acb3-d997b1892b90)
+
+
