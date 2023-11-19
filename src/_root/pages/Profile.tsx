@@ -57,7 +57,7 @@ const Profile = () => {
     ) || []
   );
 
-  const [followingArray, setfollowingArray] = useState<string[]>(
+  const [followingArray] = useState<string[]>(
     followingsData?.documents[0]?.followings?.map(
       (item: { $id: any }) => item?.$id
     ) || []
@@ -83,14 +83,14 @@ const Profile = () => {
   //     (item: { $id: any }) => item?.$id
   //   ) || [];
 
-  console.log(`Login User ${user.id}`);
-  console.log(`Profile User ${currentUser?.$id}`);
+  // console.log(`Login User ${user.id}`);
+  // console.log(`Profile User ${currentUser?.$id}`);
 
-  console.log(followersArray);
-  console.log(followingArray);
+  // console.log(followersArray);
+  // console.log(followingArray);
 
-  console.log("login User Following ");
-  console.log(LoggedInfollowing);
+  // console.log("login User Following ");
+  // console.log(LoggedInfollowing);
 
   useEffect(() => {
     const followersArrays =
@@ -153,14 +153,7 @@ const Profile = () => {
       console.log(followsArray);
       console.log(LoginfollowsArray);
 
-      await followUser(
-        currentUser?.$id,
-        user.id,
-        followsArray,
-        LoginfollowsArray,
-        visitDocId,
-        loginDocId
-      );
+      await followUser(followsArray, LoginfollowsArray, visitDocId, loginDocId);
 
       // Toggle the follow state
       setIsFollowing(!isFollowing);

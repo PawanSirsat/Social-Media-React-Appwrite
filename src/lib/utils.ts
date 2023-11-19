@@ -1,7 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { appwriteConfig, databases } from "./appwrite/config";
-import { log } from "console";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -60,18 +59,12 @@ export const checkIsLiked = (likeList: string[], userId: string) => {
 };
 
 export async function followUser(
-  userId: any,
-  targetUserId: string,
   followsArray: string[],
   LoginfollowingArray: string[],
   visitDocId: any,
   loginDocId: any
 ) {
   try {
-    console.log("Util");
-    console.log(followsArray);
-    console.log(LoginfollowingArray);
-
     // Add the targetUserId to the current user's followings list
     const updatedCurrentUser = await databases.updateDocument(
       appwriteConfig.databaseId,
