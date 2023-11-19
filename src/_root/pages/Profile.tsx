@@ -6,17 +6,28 @@ import {
   useParams,
   useLocation,
 } from "react-router-dom";
+import { Models } from "appwrite";
 
 import { Button } from "@/components/ui";
 import { LikedPosts } from "@/_root/pages";
 import { useUserContext } from "@/context/AuthContext";
-import { useGetUserById } from "@/lib/react-query/queries";
+import {
+  useGetFollowers,
+  useGetFollowings,
+  useGetUserById,
+} from "@/lib/react-query/queries";
 import { GridPostList, Loader } from "@/components/shared";
+import { followUser } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 interface StabBlockProps {
   value: string | number;
   label: string;
 }
+
+type PostStatsProps = {
+  followlist: Models.Document;
+};
 
 const StatBlock = ({ value, label }: StabBlockProps) => (
   <div className="flex-center gap-2">
@@ -30,7 +41,76 @@ const Profile = () => {
   const { user } = useUserContext();
   const { pathname } = useLocation();
 
+  // const id: string = useParams().id;
+
   const { data: currentUser } = useGetUserById(id || "");
+  const { data: followersData } = useGetFollowers(currentUser?.$id);
+  const { data: followingsData } = useGetFollowings(currentUser?.$id);
+  const { data: LoggedInfollowingsData } = useGetFollowings(user.id);
+
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [isFollower, setIsFollower] = useState(false);
+
+  const visitDocId = followersData?.documents[0]?.$id;
+  const loginDocId = LoggedInfollowingsData?.documents[0]?.$id;
+
+  // const followersCount = followersData?.documents[0]?.followers?.length || 0;
+  // const followingsCount = followingsData?.documents[0]?.followings?.length || 0;
+
+  const [followersArray, setfollowersArray] = useState<string[]>(
+    followersData?.documents[0]?.followers?.map(
+      (item: { $id: any }) => item?.$id
+    ) || []
+  );
+
+  const [followingArray, setfollowingArray] = useState<string[]>(
+    followingsData?.documents[0]?.followings?.map(
+      (item: { $id: any }) => item?.$id
+    ) || []
+  );
+
+  const [LoggedInfollowing, setLoggedInfollowing] = useState<string[]>(
+    LoggedInfollowingsData?.documents[0]?.followings?.map(
+      (item: { $id: any }) => item?.$id
+    ) || []
+  );
+
+  // const followersArray =
+  //   followersData?.documents[0]?.followers?.map(
+  //     (item: { $id: any }) => item?.$id
+  //   ) || [];
+  // const followingArray =
+  //   followingsData?.documents[0]?.followings?.map(
+  //     (item: { $id: any }) => item?.$id
+  //   ) || [];
+
+  // console.log(`Login User ${user.id}`);
+  // console.log(`Profile User ${currentUser?.$id}`);
+
+  // console.log(followersArray);
+  // console.log(followingArray);
+
+  // console.log("login User Following ");
+  // console.log(LoggedInfollowing);
+
+  useEffect(() => {
+    const followersArray =
+      followersData?.documents[0]?.followers?.map(
+        (item: { $id: any }) => item?.$id
+      ) || [];
+    setIsFollowing(followersArray.includes(user.id));
+  }, [followersData, user.id]);
+
+  useEffect(() => {
+    const followingArray =
+      followingsData?.documents[0]?.followings?.map(
+        (item: { $id: any }) => item?.$id
+      ) || [];
+    setIsFollower(followingArray.includes(user.id));
+  }, [followingsData, user.id]);
+
+  console.log(isFollowing);
+  console.log(isFollower);
 
   if (!currentUser)
     return (
@@ -38,6 +118,58 @@ const Profile = () => {
         <Loader />
       </div>
     );
+
+  const handlefollow = async (
+    e: React.MouseEvent<HTMLImageElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
+    try {
+      let followsArray = [...followersArray];
+      let LoginfollowsArray = [...LoggedInfollowing];
+      console.log("Before");
+      console.log(followsArray);
+      console.log(LoginfollowsArray);
+
+      if (LoginfollowsArray.includes(currentUser?.$id)) {
+        LoginfollowsArray = LoginfollowsArray.filter(
+          (Id) => Id !== currentUser?.$id
+        );
+      } else {
+        LoginfollowsArray.push(currentUser?.$id);
+      }
+      setLoggedInfollowing(LoginfollowsArray);
+
+      if (followsArray.includes(user.id)) {
+        followsArray = followsArray.filter((Id) => Id !== user.id);
+      } else {
+        followsArray.push(user.id);
+      }
+      setfollowersArray(followsArray);
+      // If not following, follow the user
+
+      console.log("After");
+      console.log(followsArray);
+      console.log(LoginfollowsArray);
+
+      await followUser(
+        currentUser?.$id,
+        user.id,
+        followsArray,
+        LoginfollowsArray,
+        visitDocId,
+        loginDocId
+      );
+
+      // Toggle the follow state
+      setIsFollowing(!isFollowing);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // const handleFollow = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+  //   e.stopPropagation();
+  // };
 
   return (
     <div className="profile-container">
@@ -62,8 +194,8 @@ const Profile = () => {
 
             <div className="flex gap-8 mt-10 items-center justify-center xl:justify-start flex-wrap z-20">
               <StatBlock value={currentUser.posts.length} label="Posts" />
-              <StatBlock value={20} label="Followers" />
-              <StatBlock value={20} label="Following" />
+              <StatBlock value={followersArray.length} label="Followers" />
+              <StatBlock value={followingArray.length} label="Following" />
             </div>
 
             <p className="small-medium md:base-medium text-center xl:text-left mt-7 max-w-screen-sm">
@@ -90,8 +222,15 @@ const Profile = () => {
               </Link>
             </div>
             <div className={`${user.id === id && "hidden"}`}>
+              {/* Update the Follow button to call handleFollowUser */}
               <Button type="button" className="shad-button_primary px-8">
-                Follow
+                {isFollowing ? (
+                  <span onClick={handlefollow}>Unfollow</span>
+                ) : isFollower ? (
+                  <span onClick={handlefollow}>Follow Back</span>
+                ) : (
+                  <span onClick={handlefollow}>Follow</span>
+                )}
               </Button>
             </div>
           </div>

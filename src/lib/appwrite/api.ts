@@ -353,6 +353,7 @@ export async function deletePost(postId?: string, imageId?: string) {
 // ============================== LIKE / UNLIKE POST
 export async function likePost(postId: string, likesArray: string[]) {
   try {
+    console.log(likesArray);
     const updatedPost = await databases.updateDocument(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
@@ -406,7 +407,39 @@ export async function deleteSavedPost(savedRecordId: string) {
     console.log(error);
   }
 }
+// ============================== GET FOLLOWERS DATA
 
+export async function getFollowers(userId?: string) {
+  if (!userId) return;
+  try {
+    const followersData = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.followersCollectionId,
+      [Query.equal("userID", userId)]
+    );
+    return followersData;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// ============================== GET FOLLOWINGS DATA
+
+export async function getFollowings(userId?: string) {
+  if (!userId) return;
+  try {
+    const followingData = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.followingsCollectionId,
+      [Query.equal("userID", userId)]
+    );
+    console.log(followingData);
+
+    return followingData;
+  } catch (error) {
+    console.error(error);
+  }
+}
 // ============================== GET USER'S POST
 export async function getUserPosts(userId?: string) {
   if (!userId) return;

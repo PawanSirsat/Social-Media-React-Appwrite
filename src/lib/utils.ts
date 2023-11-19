@@ -1,5 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { appwriteConfig, databases } from "./appwrite/config";
+import { log } from "console";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -25,7 +27,7 @@ export function formatDateString(dateString: string) {
   return `${formattedDate} at ${time}`;
 }
 
-// 
+//
 export const multiFormatDateString = (timestamp: string = ""): string => {
   const timestampNum = Math.round(new Date(timestamp).getTime() / 1000);
   const date: Date = new Date(timestampNum * 1000);
@@ -56,3 +58,47 @@ export const multiFormatDateString = (timestamp: string = ""): string => {
 export const checkIsLiked = (likeList: string[], userId: string) => {
   return likeList.includes(userId);
 };
+
+export async function followUser(
+  userId: any,
+  targetUserId: string,
+  followsArray: string[],
+  LoginfollowingArray: string[],
+  visitDocId: any,
+  loginDocId: any
+) {
+  try {
+    console.log("Util");
+    console.log(followsArray);
+    console.log(LoginfollowingArray);
+
+    // Add the targetUserId to the current user's followings list
+    const updatedCurrentUser = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.followersCollectionId,
+      visitDocId,
+      {
+        followers: followsArray,
+      }
+    );
+
+    if (!updatedCurrentUser) throw Error;
+
+    // Add the userId to the target user's followers list
+    const updatedTargetUser = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.followingsCollectionId,
+      loginDocId,
+      {
+        followings: LoginfollowingArray,
+      }
+    );
+
+    if (!updatedTargetUser) throw Error;
+
+    return { updatedCurrentUser, updatedTargetUser };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

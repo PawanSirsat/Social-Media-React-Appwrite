@@ -43,6 +43,9 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
 
     let likesArray = [...likes];
 
+    console.log("Likes");
+    console.log(likesArray);
+
     if (likesArray.includes(userId)) {
       likesArray = likesArray.filter((Id) => Id !== userId);
     } else {

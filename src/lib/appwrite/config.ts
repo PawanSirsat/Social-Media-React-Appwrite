@@ -8,6 +8,8 @@ export const appwriteConfig = {
   userCollectionId: "655732b42b715df9d9e3", // Updated user collection ID value
   postCollectionId: "6557327f3f43b963e688", // Updated post collection ID value
   savesCollectionId: "655732ec197d9b7f758f", // Updated saves collection ID value
+  followersCollectionId: "6558b51599aae0c5dd02",
+  followingsCollectionId: "6558d0b0a682b55ed9bc",
 };
 
 export const client = new Client();
