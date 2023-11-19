@@ -45,11 +45,36 @@ export async function saveUserToDB(user: {
   username?: string;
 }) {
   try {
+    const uniqueID = ID.unique();
+
+    console.log("Unique ID " + uniqueID);
+
     const newUser = await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
-      ID.unique(),
+      uniqueID,
       user
+    );
+
+    console.log("New User Created");
+    console.log(newUser.$id);
+
+    await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.followersCollectionId,
+      ID.unique(),
+      {
+        userID: newUser.$id,
+      }
+    );
+
+    await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.followingsCollectionId,
+      ID.unique(),
+      {
+        userID: newUser.$id,
+      }
     );
 
     return newUser;
