@@ -44,6 +44,7 @@ const Profile = () => {
 
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFollower, setIsFollower] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const visitDocId = followersData?.documents[0]?.$id;
   const loginDocId = LoggedInfollowingsData?.documents[0]?.$id;
@@ -89,20 +90,6 @@ const Profile = () => {
     }
   }, [followersData, followingsData]);
 
-  // console.log("Length");
-  // console.log(followersArray);
-  // console.log(followingArray);
-  // console.log(LoggedInfollowing);
-
-  // console.log(`Login User ${user.id}`);
-  // console.log(`Profile User ${currentUser?.$id}`);
-
-  // console.log(followersArray);
-  // console.log(followingArray);
-
-  // console.log("login User Following ");
-  // console.log(LoggedInfollowing);
-
   useEffect(() => {
     const followersArrays =
       followersData?.documents[0]?.followers?.map(
@@ -119,12 +106,6 @@ const Profile = () => {
     setIsFollower(followingArrays.includes(user.id));
   }, [followingsData, user.id]);
 
-  // console.log(followingsData);
-  // console.log(followersData);
-
-  // console.log(isFollowing);
-  // console.log(isFollower);
-
   if (!currentUser)
     return (
       <div className="flex-center w-full h-full">
@@ -137,11 +118,9 @@ const Profile = () => {
   ) => {
     e.stopPropagation();
     try {
+      setLoading(true);
       let followsArray = [...followersArray];
       let LoginfollowsArray = [...LoggedInfollowing];
-      // console.log("Before");
-      // console.log(followsArray);
-      // console.log(LoginfollowsArray);
 
       if (LoginfollowsArray.includes(currentUser?.$id)) {
         LoginfollowsArray = LoginfollowsArray.filter(
@@ -160,16 +139,14 @@ const Profile = () => {
       setfollowersArray(followsArray);
       // If not following, follow the user
 
-      // console.log("After");
-      // console.log(followsArray);
-      // console.log(LoginfollowsArray);
-
       await followUser(followsArray, LoginfollowsArray, visitDocId, loginDocId);
 
       // Toggle the follow state
       setIsFollowing(!isFollowing);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -229,8 +206,13 @@ const Profile = () => {
             </div>
             <div className={`${user.id === id && "hidden"}`}>
               {/* Update the Follow button to call handleFollowUser */}
-              <Button type="button" className="shad-button_primary px-8">
-                {isFollowing ? (
+              <Button
+                type="button"
+                className="shad-button_primary px-8"
+                disabled={isLoading}>
+                {isLoading ? (
+                  <Loader />
+                ) : isFollowing ? (
                   <span onClick={handlefollow}>Unfollow</span>
                 ) : isFollower ? (
                   <span onClick={handlefollow}>Follow Back</span>
