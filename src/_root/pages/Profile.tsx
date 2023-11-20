@@ -211,14 +211,16 @@ const Profile = () => {
                 className="shad-button_primary px-8"
                 disabled={isLoading}>
                 {isLoading ? (
-                  <Loader />
+                  <>
+                    Loading... <Loader />
+                  </>
                 ) : isFollowing ? (
                   <span onClick={handlefollow}>Unfollow</span>
                 ) : isFollower ? (
                   <span onClick={handlefollow}>Follow Back</span>
                 ) : (
                   <span onClick={handlefollow}>Follow</span>
-                )}
+                )}{" "}
               </Button>
             </div>
           </div>

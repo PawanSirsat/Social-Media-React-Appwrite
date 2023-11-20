@@ -458,8 +458,6 @@ export async function getFollowings(userId?: string) {
       appwriteConfig.followingsCollectionId,
       [Query.equal("userID", userId)]
     );
-    console.log(followingData);
-
     return followingData;
   } catch (error) {
     console.error(error);
