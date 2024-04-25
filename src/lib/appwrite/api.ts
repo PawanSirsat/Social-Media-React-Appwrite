@@ -1,8 +1,6 @@
 import { ID, Query } from "appwrite";
-
 import { appwriteConfig, account, databases, storage, avatars } from "./config";
 import { IUpdatePost, INewPost, INewUser, IUpdateUser } from "@/types";
-import { log } from "console";
 
 // ============================================================
 // AUTH
@@ -493,16 +491,11 @@ export async function getUserPosts(userId?: string) {
 // ============================== GET POPULAR POSTS (BY HIGHEST LIKE COUNT)
 export async function getRecentPosts() {
   try {
-    console.log("Recent pOSt");
-
     const posts = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
       [Query.orderDesc("$createdAt"), Query.limit(20)]
     );
-
-    console.log("Data");
-    console.log(posts);
 
     if (!posts) throw Error;
     return posts;
