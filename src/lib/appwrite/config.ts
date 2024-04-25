@@ -1,15 +1,16 @@
 import { Client, Account, Databases, Storage, Avatars } from "appwrite";
 
 export const appwriteConfig = {
-  url: "https://cloud.appwrite.io/v1", // Updated URL value
-  projectId: "6557152ea0557d9987be", // Updated project ID value
-  databaseId: "65573238b6b0cfabf031", // Updated database ID value
-  storageId: "655731fab3467412e016", // Updated storage ID value
-  userCollectionId: "655732b42b715df9d9e3", // Updated user collection ID value
-  postCollectionId: "6557327f3f43b963e688", // Updated post collection ID value
-  savesCollectionId: "655732ec197d9b7f758f", // Updated saves collection ID value
-  followersCollectionId: "6558b51599aae0c5dd02",
-  followingsCollectionId: "655afb0a99deea71f101",
+  url: import.meta.env.VITE_APPWRITE_URL,
+  projectId: import.meta.env.VITE_APPWRITE_PROJECT_ID,
+  databaseId: import.meta.env.VITE_APPWRITE_DATABASE_ID,
+  storageId: import.meta.env.VITE_APPWRITE_STORAGE_ID,
+  userCollectionId: import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID,
+  postCollectionId: import.meta.env.VITE_APPWRITE_POST_COLLECTION_ID,
+  savesCollectionId: import.meta.env.VITE_APPWRITE_SAVES_COLLECTION_ID,
+  followersCollectionId: import.meta.env.VITE_APPWRITE_URL,
+  VITE_APPWRITE_FOLLOWER_COLLECTION_ID: import.meta.env
+    .VITE_APPWRITE_FOLLOWING_COLLECTION_ID,
 };
 
 export const client = new Client();

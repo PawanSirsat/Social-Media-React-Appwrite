@@ -2,6 +2,7 @@ import { ID, Query } from "appwrite";
 
 import { appwriteConfig, account, databases, storage, avatars } from "./config";
 import { IUpdatePost, INewPost, INewUser, IUpdateUser } from "@/types";
+import { log } from "console";
 
 // ============================================================
 // AUTH
@@ -99,6 +100,8 @@ export async function getAccount() {
   try {
     const currentAccount = await account.get();
 
+    console.log(currentAccount);
+
     return currentAccount;
   } catch (error) {
     console.log(error);
@@ -108,6 +111,8 @@ export async function getAccount() {
 // ============================== GET USER
 export async function getCurrentUser() {
   try {
+    console.log("Get Currentn uSer");
+
     const currentAccount = await getAccount();
 
     if (!currentAccount) throw Error;
@@ -117,6 +122,9 @@ export async function getCurrentUser() {
       appwriteConfig.userCollectionId,
       [Query.equal("accountId", currentAccount.$id)]
     );
+
+    console.log("User Data");
+    console.log(currentUser.documents[0]);
 
     if (!currentUser) throw Error;
 
@@ -485,14 +493,18 @@ export async function getUserPosts(userId?: string) {
 // ============================== GET POPULAR POSTS (BY HIGHEST LIKE COUNT)
 export async function getRecentPosts() {
   try {
+    console.log("Recent pOSt");
+
     const posts = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
       [Query.orderDesc("$createdAt"), Query.limit(20)]
     );
 
-    if (!posts) throw Error;
+    console.log("Data");
+    console.log(posts);
 
+    if (!posts) throw Error;
     return posts;
   } catch (error) {
     console.log(error);

@@ -36,6 +36,14 @@ const SigninForm = () => {
     },
   });
 
+  const handleDemoLogin = () => {
+    const demoCredentials = {
+      email: "abhi@gmail.com",
+      password: "abhi@123",
+    };
+    handleSignin(demoCredentials);
+  };
+
   const handleSignin = async (user: z.infer<typeof SigninValidation>) => {
     const session = await signInAccount(user);
 
@@ -108,6 +116,13 @@ const SigninForm = () => {
             ) : (
               "Log in"
             )}
+          </Button>
+
+          <Button
+            type="button"
+            style={{ backgroundColor: "#1C7FC2" }}
+            onClick={handleDemoLogin}>
+            Demo Login
           </Button>
 
           <p className="text-small-regular text-light-2 text-center mt-2">
