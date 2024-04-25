@@ -8,9 +8,8 @@ export const appwriteConfig = {
   userCollectionId: import.meta.env.VITE_APPWRITE_USER_COLLECTION_ID,
   postCollectionId: import.meta.env.VITE_APPWRITE_POST_COLLECTION_ID,
   savesCollectionId: import.meta.env.VITE_APPWRITE_SAVES_COLLECTION_ID,
-  followersCollectionId: import.meta.env.VITE_APPWRITE_URL,
-  VITE_APPWRITE_FOLLOWER_COLLECTION_ID: import.meta.env
-    .VITE_APPWRITE_FOLLOWING_COLLECTION_ID,
+  followersCollectionId: import.meta.env.VITE_APPWRITE_FOLLOWER_COLLECTION_ID,
+  followingsCollectionId: import.meta.env.VITE_APPWRITE_FOLLOWING_COLLECTION_ID,
 };
 
 export const client = new Client();
